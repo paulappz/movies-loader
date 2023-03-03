@@ -1,1 +1,5 @@
 reports
+Dockerfile.test
+Jenkinsfile.declarative
+Dockerfile
+
