@@ -1,5 +1,8 @@
+pipeline{
 
+    agent any
 
-        stage('Checkout'){
-            checkout scm
-        }
+   stage('Checkout'){
+        checkout scm
+    }
+}
