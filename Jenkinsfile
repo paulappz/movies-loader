@@ -1,5 +1,8 @@
 def imageName = 'paulappz/movies-loader'
-def registry = 'https://registry.gbnlcicd.com'
+// def registry = 'https://registry.gbnlcicd.com'
+def registry = '530364773324.dkr.ecr.eu-west-3.amazonaws.com' 
+def region = 'eu-west-2'
+
 
 node('workers'){
     stage('Checkout'){
@@ -16,16 +19,16 @@ node('workers'){
     stage('Build'){
         docker.build(imageName)
     }
-
+    
     stage('Push'){
-     //       docker.withRegistry(registry, 'registry') {
-         //       docker.image(imageName).push(commitID())
-  //  
-         //       if (env.BRANCH_NAME == 'develop') {
-        //            docker.image(imageName).push('develop')
-       //         }
-       //     }
+    
+        sh "aws ecr get-login-password --region ${region} |
+        docker login --username AWS --password-stdin ${registry}/${imageName}"
+
+        docker.image(imageName).push(commitID()) if (env.BRANCH_NAME == 'develop') {
+        docker.image(imageName).push('develop')
     }
+}
 
     stage('Analyze'){
         //    def scannedImage = "${registry}/${imageName}:${commitID()} ${workspace}/Dockerfile"
