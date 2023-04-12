@@ -1,6 +1,6 @@
 def imageName = 'paulappz/movies-loader'
 // def registry = 'https://registry.gbnlcicd.com'
-def registry = '530364773324.dkr.ecr.eu-west-3.amazonaws.com' 
+def registry = '530364773324.dkr.ecr.eu-west-2.amazonaws.com/paulappz/movies-loader' 
 def region = 'eu-west-2'
 
 environment{
