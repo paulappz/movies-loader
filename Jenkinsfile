@@ -29,7 +29,7 @@ node('workers'){
     stage('Push'){
      //   sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
 
-        docker.withRegistry(${registry}, 'ecr:us-east-2:aws-credentials') {
+        docker.withRegistry(${registry}/${imageName}, 'ecr:us-east-2:aws-credentials') {
                   //  app.push(commitID())
                   //  app.push("latest")
                   
