@@ -5,7 +5,12 @@ def region = 'eu-west-2'
 
 pipeline{
 
-
+environment{
+        AWS_ACCESS_KEY_ID=credentials('aws_key_id')
+        AWS_SECRET_ACCESS_KEY=credentials('aws_key_secret')
+        AWS_DEFAULT_REGION="eu-west-2"
+    }
+    
     agent{
         label 'workers'
     }
@@ -40,9 +45,9 @@ pipeline{
             steps{
            script {
         
-                //   sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
+            sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
 
-        docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
+       // docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
                   //  app.push(commitID())
                   //  app.push("latest")
                   
@@ -50,7 +55,7 @@ pipeline{
                   if (env.BRANCH_NAME == 'develop') {
              docker.image(imageName).push('develop')
                    } 
-               }
+            //   }
            }
         }
         
