@@ -1,75 +1,47 @@
+
 def imageName = 'paulappz/movies-loader'
 // def registry = 'https://registry.gbnlcicd.com'
-def registry = 'https://530364773324.dkr.ecr.eu-west-2.amazonaws.com/paulappz/movies-loader' 
+def registry = '530364773324.dkr.ecr.eu-west-2.amazonaws.com' 
 def region = 'eu-west-2'
-
-pipeline{
 
 environment{
         AWS_ACCESS_KEY_ID=credentials('aws_key_id')
         AWS_SECRET_ACCESS_KEY=credentials('aws_key_secret')
         AWS_DEFAULT_REGION="eu-west-2"
     }
-    
-    agent{
-        label 'workers'
+
+
+node('workers'){
+    stage('Checkout'){
+        checkout scm
     }
 
-    stages{
-        stage('Checkout'){
-            steps{
-                checkout scm
-            }
+    stage('Unit Tests'){
+        def imageTest= docker.build("${imageName}-test", "-f Dockerfile.test .")
+        imageTest.inside{
+            sh "python test_main.py"
         }
+    }
 
-        stage('Unit Tests'){
-            steps{
-                script {
-                    def imageTest= docker.build("${imageName}-test", "-f Dockerfile.test .")
-                    imageTest.inside{
-                        sh "python test_main.py"
-                    }
-                }
-            }
-        }
-
-        stage('Build'){
-            steps{
-                script {
-                  docker.build(imageName)
-                }
-            }
-        }
-
-        stage('Push'){
-            steps{
-           script {
-        
-        //    sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
-
-        docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
-        
-        def imageBuild =  docker.build(imageName)
+    stage('Build'){
+        docker.build(imageName)
+    }
+    
+    stage('Push'){
+       sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
                   
-            imageBuild.push(commitID()) 
+            docker.image(imageName).push(commitID()) 
                   if (env.BRANCH_NAME == 'develop') {
-             imageBuild.push('develop')
+             docker.image(imageName).push('develop')
                    } 
-              }
-           }
-        }
-        
-    }
     
-     stage('Analyze'){
-            steps{
-                script {
-                      sh " ls "
-                }
-            }
-        }
+}
+
+    stage('Analyze'){
+        //    def scannedImage = "${registry}/${imageName}:${commitID()} ${workspace}/Dockerfile"
+        //    writeFile file: 'images', text: scannedImage
+        //    anchore name: 'images'
     }
-    
 }
 
 def commitID() {
