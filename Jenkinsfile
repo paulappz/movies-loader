@@ -1,6 +1,6 @@
 def imageName = 'paulappz/movies-loader'
 // def registry = 'https://registry.gbnlcicd.com'
-def registry = 'https://530364773324.dkr.ecr.eu-west-2.amazonaws.com' 
+def registry = 'https://530364773324.dkr.ecr.eu-west-2.amazonaws.com/paulappz/movies-loader' 
 def region = 'eu-west-2'
 
 pipeline{
@@ -36,7 +36,7 @@ environment{
         stage('Build'){
             steps{
                 script {
-                  def imageBuild =  docker.build(imageName)
+                  docker.build(imageName)
                 }
             }
         }
@@ -45,17 +45,17 @@ environment{
             steps{
            script {
         
-            sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
+        //    sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
 
-       // docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
-                  //  app.push(commitID())
-                  //  app.push("latest")
+        docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
+        
+        def imageBuild =  docker.build(imageName)
                   
             imageBuild.push(commitID()) 
                   if (env.BRANCH_NAME == 'develop') {
              imageBuild.push('develop')
                    } 
-            //   }
+              }
            }
         }
         
