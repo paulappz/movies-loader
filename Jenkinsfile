@@ -36,7 +36,7 @@ environment{
         stage('Build'){
             steps{
                 script {
-                    docker.build(imageName)
+                  def imageBuild =  docker.build(imageName)
                 }
             }
         }
@@ -51,9 +51,9 @@ environment{
                   //  app.push(commitID())
                   //  app.push("latest")
                   
-            docker.image(imageName).push(commitID()) 
+            imageBuild.push(commitID()) 
                   if (env.BRANCH_NAME == 'develop') {
-             docker.image(imageName).push('develop')
+             imageBuild.push('develop')
                    } 
             //   }
            }
