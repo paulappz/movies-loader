@@ -29,7 +29,7 @@ node('workers'){
     
     stage('Push'){
        sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
-        // docker.build(imageName)
+     
        sh "  docker build -t ${imageName} . "
        sh " docker tag ${imageName}:latest ${registry}/${imageName}:latest"
        sh "docker push ${registry}/${imageName}:latest"
@@ -42,9 +42,9 @@ node('workers'){
 }
 
     stage('Analyze'){
-        //    def scannedImage = "${registry}/${imageName}:${commitID()} ${workspace}/Dockerfile"
-        //    writeFile file: 'images', text: scannedImage
-        //    anchore name: 'images'
+           def scannedImage = "${registry}/${imageName}:${commitID()} ${workspace}/Dockerfile"
+           writeFile file: 'images', text: scannedImage
+            anchore name: 'images'
     }
 }
 
