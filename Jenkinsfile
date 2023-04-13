@@ -31,7 +31,7 @@ node('workers'){
        sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
                   docker build -t "${imageName}" .
                   
-                  docker push ${registry}/${imageName}":latest
+                  docker push "${registry}/${imageName}":latest
 
             
          //   docker.image(imageName).push(commitID()) 
