@@ -1,6 +1,6 @@
 def imageName = 'paulappz/movies-loader'
 // def registry = 'https://registry.gbnlcicd.com'
-def registry = 'https://530364773324.dkr.ecr.eu-west-2.amazonaws.com/paulappz/movies-loader' 
+def registry = 'https://530364773324.dkr.ecr.eu-west-2.amazonaws.com' 
 def region = 'eu-west-2'
 
 pipeline{
