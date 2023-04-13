@@ -1,6 +1,6 @@
 def imageName = 'paulappz/movies-loader'
 // def registry = 'https://registry.gbnlcicd.com'
-def registry = '530364773324.dkr.ecr.eu-west-2.amazonaws.com' 
+def registry = 'https://530364773324.dkr.ecr.eu-west-2.amazonaws.com/paulappz/movies-loader' 
 def region = 'eu-west-2'
 
 pipeline{
@@ -46,7 +46,7 @@ environment{
            
                 //   sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
 
-        docker.withRegistry("https://${registry}/${imageName}", 'ecr:us-east-2:aws-credentials') {
+        docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
                   //  app.push(commitID())
                   //  app.push("latest")
                   
@@ -63,9 +63,7 @@ environment{
      stage('Analyze'){
             steps{
                 script {
-                       //    def scannedImage = "${registry}/${imageName}:${commitID()} ${workspace}/Dockerfile"
-        //    writeFile file: 'images', text: scannedImage
-        //    anchore name: 'images'
+        
                 }
             }
         }
