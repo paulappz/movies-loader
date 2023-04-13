@@ -6,7 +6,6 @@ def region = 'eu-west-2'
 pipeline{
 
 
-    
     agent{
         label 'workers'
     }
