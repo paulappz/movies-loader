@@ -29,15 +29,12 @@ node('workers'){
     
     stage('Push'){
        sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
-                  docker build -t "${imageName}" .
-                  
-                  docker push "${registry}/${imageName}":latest
+             def imageBuild = docker.build(imageName)
 
-            
-         //   docker.image(imageName).push(commitID()) 
-          //        if (env.BRANCH_NAME == 'develop') {
-        //     docker.image(imageName).push('develop')
-         //          } 
+          imageBuild.push(commitID()) 
+                if (env.BRANCH_NAME == 'develop') {
+            imageBuild.push('develop')
+                   } 
     
 }
 
