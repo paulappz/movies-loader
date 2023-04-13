@@ -43,7 +43,8 @@ environment{
 
         stage('Push'){
             steps{
-           
+           script {
+        
                 //   sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
 
         docker.withRegistry(registry, 'ecr:us-east-2:aws-credentials') {
@@ -55,7 +56,7 @@ environment{
              docker.image(imageName).push('develop')
                    } 
                }
-           
+           }
         }
         
     }
@@ -63,7 +64,7 @@ environment{
      stage('Analyze'){
             steps{
                 script {
-        
+                      sh " ls "
                 }
             }
         }
