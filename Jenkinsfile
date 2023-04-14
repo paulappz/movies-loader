@@ -28,10 +28,10 @@ node('workers'){
        sh " docker tag ${imageName}:latest ${registry}/${imageName}:latest"
        sh "docker push ${registry}/${imageName}:latest"
 
-        //  imageBuild.push(commitID()) 
+         //  imageBuild.push(commitID()) 
          //       if (env.BRANCH_NAME == 'develop') {
          //   imageBuild.push('develop')
-           //        } 
+         //        } 
     
 }
 
