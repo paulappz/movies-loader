@@ -42,8 +42,6 @@ node('workers'){
 }
 
     stage('Analyze'){
-            sh "  docker build -t ${imageName} . "
-            sh " docker tag ${imageName}:latest ${registry}/${imageName}:latest"
            def scannedImage = "${registry}/${imageName}:latest ${workspace}/Dockerfile"
            writeFile file: 'images', text: scannedImage
             anchore name: 'images'
