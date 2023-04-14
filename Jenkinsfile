@@ -4,12 +4,6 @@ def imageName = 'paulappz/movies-loader'
 def registry = '530364773324.dkr.ecr.eu-west-2.amazonaws.com' 
 def region = 'eu-west-2'
 
-environment{
-        AWS_ACCESS_KEY_ID=credentials('aws_key_id')
-        AWS_SECRET_ACCESS_KEY=credentials('aws_key_secret')
-        AWS_DEFAULT_REGION="eu-west-2"
-    }
-
 
 node('workers'){
     stage('Checkout'){
