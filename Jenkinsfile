@@ -25,8 +25,8 @@ node('workers'){
        sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
      
        sh "  docker build -t ${imageName} . "
-       sh " docker tag ${imageName}:commitID() ${registry}/${imageName}:commitID()"
-       sh "docker push ${registry}/${imageName}:commitID()"
+       sh " docker tag ${imageName}:${commitID()} ${registry}/${imageName}:${commitID()}"
+       sh "docker push ${registry}/${imageName}:${commitID()}"
 
          //  imageBuild.push(commitID()) 
          //       if (env.BRANCH_NAME == 'develop') {
@@ -36,7 +36,7 @@ node('workers'){
 }
 
     stage('Analyze'){
-           def scannedImage = "${registry}/${imageName}:commitID() ${workspace}/Dockerfile"
+           def scannedImage = "${registry}/${imageName}:${commitID()} ${workspace}/Dockerfile"
            writeFile file: 'images', text: scannedImage
             anchore name: 'images'
     }
