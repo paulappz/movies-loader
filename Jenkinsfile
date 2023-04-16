@@ -21,13 +21,14 @@ node('workers'){
        //def imageBuild = docker.build(imageName)
         sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
         sh "docker build --tag ${imageName}:${commitID()} ."
+        sh " docker tag ${imageName}:${commitID()} ${registry}/${imageName}:${commitID()}"
     }
     
     stage('Push'){
-       sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
+     //  sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
      
-       sh "  docker build -t ${imageName} . "
-       sh " docker tag ${imageName}:${commitID()} ${registry}/${imageName}:${commitID()}"
+     //  sh "  docker build -t ${imageName} . "
+     //  sh " docker tag ${imageName}:${commitID()} ${registry}/${imageName}:${commitID()}"
        sh "docker push ${registry}/${imageName}:${commitID()}"
 
          //  imageBuild.push(commitID()) 
