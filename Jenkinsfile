@@ -18,7 +18,9 @@ node('workers'){
     }
 
     stage('Build'){
-       def imageBuild = docker.build(imageName)
+       //def imageBuild = docker.build(imageName)
+        sh "aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${registry}/${imageName}"
+        sh "docker build --tag ${imageName}:${commitID()} ."
     }
     
     stage('Push'){
